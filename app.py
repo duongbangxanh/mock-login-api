@@ -2,12 +2,20 @@ from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
+# Ghi log mọi request đến
+@app.before_request
+def log_request_info():
+    print(f"🔍 {request.method} {request.path} from {request.remote_addr}")
+
+# Xử lý đăng nhập từ phần mềm
 @app.route('/Account/AppLogin', methods=['POST'])
 def login():
     data = request.get_json()
     username = data.get('username')
     password = data.get('password')
-    
+
+    print(f"🔥 Login attempt → Username: {username}, Password: {password}")
+
     if username == 'admin' and password == '123456':
         return jsonify({
             "UserName": "MrTTS",
